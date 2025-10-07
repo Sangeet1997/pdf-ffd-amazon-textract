@@ -2,14 +2,12 @@ import json
 import re
 
 
-def filter_signature_key_value_pairs(input_file, output_file):
+def filter_signature_key_value_pairs(document_name):
     """
     Filter KEY_VALUE_SET blocks where the key text contains 'sign' or 'signature' (case-insensitive).
-    
-    Args:
-        input_file: Path to input JSON file
-        output_file: Path to output JSON file
     """
+    input_file = "amazon_textract_raw/" + document_name.replace(".pdf", "_analysis.json")
+    output_file = "geometry_info/" + document_name.replace(".pdf", "_filtered_signature_key_value_pairs.json")
     with open(input_file, 'r') as f:
         data = json.load(f)
     
@@ -47,7 +45,10 @@ def filter_signature_key_value_pairs(input_file, output_file):
     with open(output_file, 'w') as f:
         json.dump(output_data, f, indent=2)
     
-    return output_data
+    #print length of filtered blocks
+    print("found "+ str(len(filtered_blocks))//2 + " matching keys + value pairs")
+    print("-----------------------------------------------------------")
+    
 
 
 def get_text_from_block(block, block_map):
@@ -61,7 +62,9 @@ def get_text_from_block(block, block_map):
                 if child_block.get('BlockType') == 'WORD':
                     text_parts.append(child_block.get('Text', ''))
     
+    
     return ' '.join(text_parts)
+
 
 
 if __name__ == '__main__':
@@ -69,4 +72,4 @@ if __name__ == '__main__':
         'amazon_textract_raw/i20/analyzeDocResponse.json',
         'geometry_info/filtered_signature_key_value_pairs.json'
     )
-    print(f"Found {len(result['Blocks'])} matching blocks (keys + values)")
+
