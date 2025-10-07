@@ -20,12 +20,20 @@ def annotate_pdf_with_bbox(input_pdf_path, geometry_json_path, output_pdf_path):
         page_width = float(page.mediabox.width)
         page_height = float(page.mediabox.height)
         
+        # Draw rectangles for each block on this page
+        current_page = page_num + 1  # Page numbers are 1-indexed
+        has_annotations = False
+        
         # Create overlay with bounding boxes
         packet = io.BytesIO()
         overlay_canvas = canvas.Canvas(packet, pagesize=(page_width, page_height))
         
-        # Draw rectangles for each block
         for block in blocks:
+            # Only process blocks for the current page
+            block_page = block.get('Page', 1)
+            if block_page != current_page:
+                continue
+            
             entity_types = block.get('EntityTypes', [])
             geometry = block.get('Geometry', {})
             bbox = geometry.get('BoundingBox', {})
@@ -49,13 +57,16 @@ def annotate_pdf_with_bbox(input_pdf_path, geometry_json_path, output_pdf_path):
             
             overlay_canvas.setLineWidth(2)
             overlay_canvas.rect(left, top - height, width, height, fill=0)
+            has_annotations = True
         
         overlay_canvas.save()
         
-        # Merge overlay with original page
-        packet.seek(0)
-        overlay_pdf = PdfReader(packet)
-        page.merge_page(overlay_pdf.pages[0])
+        # Merge overlay with original page only if there are annotations
+        if has_annotations:
+            packet.seek(0)
+            overlay_pdf = PdfReader(packet)
+            page.merge_page(overlay_pdf.pages[0])
+        
         writer.add_page(page)
     
     with open(output_pdf_path, 'wb') as output_file:
