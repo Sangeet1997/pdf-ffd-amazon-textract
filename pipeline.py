@@ -7,7 +7,7 @@ import os
 def single_job(document_name = 'i20.pdf', input_path = 'input_pdf/'):
     extract_form_data(document_name=document_name, input_path=input_path)
     filter_signature_key_value_pairs(document_name=document_name)
-    annotate_pdf_with_bbox(document_name=document_name)
+    annotate_pdf_with_bbox(document_name=document_name, input_path=input_path)
 
 # def job_without_textract(document_name = 'i20.pdf'):
 #     filter_signature_key_value_pairs(document_name=document_name)

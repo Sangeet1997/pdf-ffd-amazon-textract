@@ -6,9 +6,9 @@ from PyPDF2 import PdfReader, PdfWriter
 from reportlab.lib.colors import green, red
 import io
 
-def annotate_pdf_with_bbox(document_name = "i20.pdf"):
+def annotate_pdf_with_bbox(document_name = "i20.pdf", input_path = "input_pdf/"):
     """Annotate a PDF document with bounding boxes from Textract analysis results."""
-    input_pdf_path = "input_pdf/" + document_name
+    input_pdf_path = input_path + document_name
     output_pdf_path = "output_pdf/" + document_name.replace(".pdf", "_annotated.pdf")
     geometry_json_path = "geometry_info/" + document_name.replace(".pdf", "_filtered_signature_key_value_pairs.json")
 
