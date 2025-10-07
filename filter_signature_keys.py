@@ -11,7 +11,7 @@ def filter_signature_key_value_pairs(document_name):
     with open(input_file, 'r') as f:
         data = json.load(f)
     
-    blocks = data.get('Blocks', [])
+    blocks = data
     
     # Create a mapping of block IDs to blocks for easy lookup
     block_map = {block['Id']: block for block in blocks}
