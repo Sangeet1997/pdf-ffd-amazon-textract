@@ -1,4 +1,5 @@
 import json
+import re
 
 
 def filter_signature_key_value_pairs(input_file, output_file):
@@ -26,7 +27,8 @@ def filter_signature_key_value_pairs(input_file, output_file):
             # Get the text from child WORD blocks
             key_text = get_text_from_block(block, block_map)
             
-            if any(keyword in key_text.lower() for keyword in ['signature', 'sign']):
+            # Use word boundaries to match complete words only
+            if re.search(r'\b(signature|sign)\b', key_text, re.IGNORECASE):
                 signature_key_blocks.append(block)
                 
                 # Get associated VALUE block IDs
