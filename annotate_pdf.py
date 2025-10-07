@@ -77,7 +77,7 @@ def annotate_pdf_with_bbox(document_name = "i20.pdf"):
     with open(output_pdf_path, 'wb') as output_file:
         writer.write(output_file)
     
-    print(f"Annotated PDF saved as {output_pdf}")
+    print(f"Annotated PDF saved as {output_file}")
     print("-----------------------------------------------------------")
 
 if __name__ == "__main__":

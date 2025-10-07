@@ -46,7 +46,7 @@ def filter_signature_key_value_pairs(document_name):
         json.dump(output_data, f, indent=2)
     
     #print length of filtered blocks
-    print("found "+ str(len(filtered_blocks))//2 + " matching keys + value pairs")
+    print("found "+ str(len(filtered_blocks)//2) + " matching keys + value pairs")
     print("-----------------------------------------------------------")
     
 
